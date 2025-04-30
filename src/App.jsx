@@ -1,50 +1,35 @@
 import { useState,useEffect  } from 'react'
 import Login from "./LogIn";
+import Post from "./Post"
 import './App.css'
-// const server = require("./serverUtils/server");
 import {getPosts} from "./serverUtils/server"
 function App() {
-  const [logIn, setLogin] = useState(false);
+  const [logIn, setLogin] = useState({user:null, verify:false});
   const [posts, setPosts] = useState([]);
-   useEffect( () => {
-    if (logIn) {
-      // async function getPosts() {
-      //   try {
-      //     const response = await fetch("https://blogapi-rqj2.onrender.com/posts", {
-      //       mode: "cors",
-      //       method: "GET",
-      //       credentials: "include",
-      //       headers: {
-      //         'Content-Type': 'application/json'
-      //       },
-      //     });
-      //     const data = await response.json();
-      //     setPosts(data);
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // }
+  const [hover,setHover] = useState(0)
+  
+  useEffect( () => {
+    if (logIn.verify) {
       async function fetch() {
         let data = await getPosts();
         console.log(data);
         setPosts(data);        
       }
       fetch();
+
     }
    }, [logIn]);
   
   return (
     <>
-      {!logIn ? (<Login logIn={logIn} set={setLogin}></Login>) :
+      {!logIn.verify ? (<Login logIn ={logIn}setLogin={setLogin}></Login>) :
       (
         <>
-            <h1>You are logged in</h1>
-            <ul>
+            <h1>You are logged in {logIn.user.firstname}</h1>
               {posts.map((post) => {
-                return <li key={post.id}>{post.title}</li>
+                return <Post title ={post.title} content = {post.content} id ={post.id} published ={post.published} hover ={hover} setHover={setHover}></Post>
               }
               )}
-            </ul>
         </>
       )}
     </>

@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import {log} from "./serverUtils/server"
-function Login({set}) {
+function Login({setLogin,logIn }) {
+
   async function logIn(formData) {
-    set(log(formData)) 
+    const verified = await log(formData);
+    console.log(verified);
+    setLogin({user:verified.user, verify:verified.verify});
   }
   return (
     <>

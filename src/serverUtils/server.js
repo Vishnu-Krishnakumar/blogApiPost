@@ -51,11 +51,34 @@ async function getComments(postId){
     },
   });
   const comments =  await response.json();
-  console.log(comments);
   return comments;
   }catch(error){
     console.log(error);
   }
 }
 
-export { getPosts, log,getComments };
+async function postComments(formData){
+
+  const body ={
+    email:formData.get("email"),
+    id:formData.get("id"),
+    postId:formData.get("postId"),
+    content:formData.get("content"),
+  }
+   try{
+    const response = await fetch(`https://blogapi-rqj2.onrender.com/comments/${formData.get("postId")}`,{
+      mode:"cors",
+      method:"POST",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json",
+      },
+      body: JSON.stringify(body),
+    }).then((response) =>response.json())
+    .then((response)=> {return response});
+   }catch(error){
+    console.log(error);
+   }
+}
+
+export { getPosts, log,getComments,postComments };

@@ -6,8 +6,7 @@ import {getPosts} from "./serverUtils/server"
 function App() {
   const [logIn, setLogin] = useState({user:null, verify:false});
   const [posts, setPosts] = useState([]);
-  const [hover,setHover] = useState(0)
-  
+  const [hover,setHover] = useState(-1)
   useEffect( () => {
     if (logIn.verify) {
       async function fetch() {
@@ -26,10 +25,16 @@ function App() {
       (
         <>
             <h1>You are logged in {logIn.user.firstname}</h1>
+            <h2>Click on a post to read and comment on!</h2>
+            <div className ="allPosts">
               {posts.map((post) => {
-                return <Post title ={post.title} content = {post.content} id ={post.id} published ={post.published} hover ={hover} setHover={setHover}></Post>
-              }
+                if(hover === -1 || hover === post.id && post.published === true)
+                return <Post title ={post.title} content = {post.content} id ={post.id} published ={post.published} hover ={hover} setHover={setHover} user = {logIn.user} ></Post>
+                else return
+                }
               )}
+            </div>
+           
         </>
       )}
     </>

@@ -4,6 +4,10 @@
   padding: 2rem;
   text-align: center;
 }
+.allPosts{
+  display: flex;
+  flex-direction: row;
+}
 #postCard{
   display: flex;
   flex-direction: column;
@@ -12,14 +16,18 @@
   border-radius: 20px;
   margin: 10px;
   padding:15px;
-  height:100px;
+  min-height:100px;
+  width: 300px;
   cursor: pointer;
-  transition:height 2s;
+  text-overflow: ellipsis;
+  overflow: hidden ;
+  transition:min-height 2s, width 2s;
 }
 
 #postCard:hover,
 #postCard.permaCard{
-  height: 600px;
+  min-height: 300px;
+  max-width: 900px;
 }
 
 li{

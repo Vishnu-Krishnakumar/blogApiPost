@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import { register } from "./serverUtils/server";
 function Register(){
-
+  const navigate = useNavigate();
   async function registration(formData){
     let response = await register(formData);
-    console.log(response);
+    if(response === true){
+      navigate('/');
+    }
   }
 
   return(

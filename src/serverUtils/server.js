@@ -40,6 +40,34 @@ async function log(formData) {
     return verified;
 }
 
+async function register(formData){
+  const body ={
+    firstname:formData.get("firstname"),
+    lastname:formData.get("lastname"),
+    email:formData.get("email"),
+    password:formData.get("password"),
+    passwordRE:formData.get("passwordRE"),
+  }
+  try{
+  let response = await fetch (`https://blogapi-rqj2.onrender.com/user/register`,{
+    mode: "cors",
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type":"application/json",
+    },
+    body: JSON.stringify(body),
+   })
+   if(response.status === 201){
+    return true;
+   }
+   else return response.json();
+  }catch(error){
+
+    console.log(error);
+  }
+}
+
 async function getComments(postId){
   try{
   const response = await fetch(`https://blogapi-rqj2.onrender.com/comments/${postId}`, {
@@ -81,4 +109,4 @@ async function postComments(formData){
    }
 }
 
-export { getPosts, log,getComments,postComments };
+export { getPosts, log,getComments,postComments,register };

@@ -3,10 +3,12 @@ import Login from "./LogIn";
 import Post from "./Post"
 import './App.css'
 import {getPosts} from "./serverUtils/server"
+import { Link } from "react-router-dom";
 function App() {
   const [logIn, setLogin] = useState({user:null, verify:false});
   const [posts, setPosts] = useState([]);
   const [hover,setHover] = useState(-1)
+  
   useEffect( () => {
     if (logIn.verify) {
       async function fetch() {
@@ -21,7 +23,12 @@ function App() {
   
   return (
     <>
-      {!logIn.verify ? (<Login logIn ={logIn}setLogin={setLogin}></Login>) :
+      {!logIn.verify ? (
+      <div>
+        <Login logIn ={logIn}setLogin={setLogin}></Login>
+        <Link to ="register">Register a new account!</Link>
+      </div>
+      ):
       (
         <>
             <h1>You are logged in {logIn.user.firstname}</h1>

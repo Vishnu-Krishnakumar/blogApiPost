@@ -47,6 +47,7 @@ async function register(formData){
     email:formData.get("email"),
     password:formData.get("password"),
     passwordRE:formData.get("passwordRE"),
+    author:false,
   }
   try{
   let response = await fetch (`https://blogapi-rqj2.onrender.com/user/register`,{

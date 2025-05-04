@@ -2,7 +2,7 @@ import { useState,useEffect  } from 'react'
 import Login from "./LogIn";
 import Post from "./Post"
 import './App.css'
-import {getPosts} from "./serverUtils/server"
+import {getAllposts} from "./serverUtils/server"
 import { Link } from "react-router-dom";
 function App() {
   const [logIn, setLogin] = useState({user:null, verify:false});
@@ -12,7 +12,7 @@ function App() {
   useEffect( () => {
     if (logIn.verify) {
       async function fetch() {
-        let data = await getPosts();
+        let data = await getAllposts();
         console.log(data);
         setPosts(data);        
       }
@@ -35,8 +35,9 @@ function App() {
             <h2>Click on a post title to read and comment on!</h2>
             <div className ="allPosts">
               {posts.map((post) => {
+                if(post.published === false) return
                 if(hover === -1 || hover === post.id && post.published === true)
-                return <Post title ={post.title} content = {post.content} createdAt ={post.createdAt} id ={post.id} published ={post.published} hover ={hover} setHover={setHover} user = {logIn.user} ></Post>
+                return <Post title ={post.title} content = {post.content} createdAt = {post.createdAt} id ={post.id} published = {post.published} hover = {hover} setHover = {setHover} user = {logIn.user} ></Post>
                 else return
                 }
               )}

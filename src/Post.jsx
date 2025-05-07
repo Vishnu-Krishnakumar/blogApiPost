@@ -3,8 +3,10 @@ import {getComments,postComments} from "./serverUtils/server"
 import Comment from "./Comment";
 import { parseISO , getDate} from 'date-fns';
 function Post({title,content,published,createdAt,id,setHover,hover,user}) {
+  
   const [comments,setComments] = useState([])
   const created = parseISO(createdAt).toDateString();
+
   async function data(){
     const current = await getComments(id)
     setComments(current);
@@ -34,7 +36,7 @@ function Post({title,content,published,createdAt,id,setHover,hover,user}) {
       <div className ="posts"> 
       <h3 onClick ={permaHover} >{title}</h3>
       {hover === id && <li>{created}</li>}
-      {hover === id && <li>{content}</li> }
+      {hover === id && <div dangerouslySetInnerHTML={{__html:content}}></div> }
       <div className = "commentSection" style = {{visibility:hover === id?"visible":"hidden"}} >
       <label>Comment Section</label>
       <form className = "commentForm" action ={submit} >

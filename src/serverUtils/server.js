@@ -50,6 +50,7 @@ async function log(formData) {
   })
     .then((response) => response.json())
     .then((response) => {
+      localStorage.setItem("authToken", response.token);
       let tokenArray = response.token.split('.');
       let user = JSON.parse(atob(tokenArray[1])).user;
       verified = {user:user , verify: true}
@@ -65,7 +66,7 @@ async function register(formData){
     email:formData.get("email"),
     password:formData.get("password"),
     passwordRE:formData.get("passwordRE"),
-    author:false,
+    author:"false",
   }
   try{
   let response = await fetch (`https://blogapi-rqj2.onrender.com/user/register`,{

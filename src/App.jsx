@@ -8,16 +8,39 @@ function App() {
   const [logIn, setLogin] = useState({user:null, verify:false});
   const [posts, setPosts] = useState([]);
   const [hover,setHover] = useState(-1)
-  
+
+
+  useEffect(()=>{  
+    try{
+      let token = localStorage.getItem("authToken");
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      console.log(currentTimestamp)
+      token = token.split('.');
+      let iat = JSON.parse(atob(token[1])).iat;
+      console.log(iat);
+      
+      token = JSON.parse(atob(token[1])).user;
+      
+      console.log(token);
+      if(iat < currentTimestamp + 300){
+        setLogin({user:token,verify:true});
+        
+      }
+      else{
+        return console.log("token expired")
+    } 
+    }catch(error){console.log(error)}
+    
+  },[])
+ 
   useEffect( () => {
     if (logIn.verify) {
       async function fetch() {
         let data = await getAllposts();
         console.log(data);
-        setPosts(data);        
+        setPosts(data);
       }
-      fetch();
-
+      fetch();     
     }
    }, [logIn]);
   
@@ -31,7 +54,7 @@ function App() {
       ):
       (
         <>
-            <h1>You are logged in {logIn.user.firstname}</h1>
+            <h1>Welcome {logIn.user.firstname}!</h1>
             <h2>Click on a post title to read and comment on!</h2>
             <div className ="allPosts">
               {posts.map((post) => {

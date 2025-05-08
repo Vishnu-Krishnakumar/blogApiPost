@@ -1,6 +1,7 @@
 import { useState,useEffect  } from 'react'
 import Login from "./LogIn";
 import Post from "./Post"
+import Navigation from './Navigation';
 import './App.css'
 import {getAllposts} from "./serverUtils/server"
 import { Link } from "react-router-dom";
@@ -13,21 +14,18 @@ function App() {
   useEffect(()=>{  
     try{
       let token = localStorage.getItem("authToken");
+      if (token === null) return;
       const currentTimestamp = Math.floor(Date.now() / 1000);
-      console.log(currentTimestamp)
+ 
       token = token.split('.');
-      let iat = JSON.parse(atob(token[1])).iat;
-      console.log(iat);
-      
+      let exp = JSON.parse(atob(token[1])).exp;
+
       token = JSON.parse(atob(token[1])).user;
-      
-      console.log(token);
-      if(iat < currentTimestamp + 300){
-        setLogin({user:token,verify:true});
-        
+      if(exp < currentTimestamp){
+        return console.log("token expired")
       }
       else{
-        return console.log("token expired")
+        setLogin({user:token,verify:true});
     } 
     }catch(error){console.log(error)}
     
@@ -37,7 +35,7 @@ function App() {
     if (logIn.verify) {
       async function fetch() {
         let data = await getAllposts();
-        console.log(data);
+
         setPosts(data);
       }
       fetch();     
@@ -46,6 +44,8 @@ function App() {
   
   return (
     <>
+      {logIn.verify && <Navigation setLogIn={setLogin}></Navigation>}
+      
       {!logIn.verify ? (
       <div>
         <Login logIn ={logIn}setLogin={setLogin}></Login>

@@ -74,3 +74,8 @@ li{
   justify-content: center;
   align-items: start;
 }
+
+.navigation{
+  display: flex;
+  align-items: start;
+}

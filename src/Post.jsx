@@ -32,7 +32,7 @@ function Post({title,content,published,createdAt,id,setHover,hover,user}) {
   },[hover])
 
   return (
-    <div id = "postCard" className = {hover === id ?'permaCard':'card'}  >
+    <div key = {parseISO(createdAt).toISOString()} id = "postCard" className = {hover === id ?'permaCard':'card'}  >
       <div className ="posts"> 
       <h3 onClick ={permaHover} >{title}</h3>
       {hover === id && <li>{created}</li>}
